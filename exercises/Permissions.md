@@ -15,7 +15,7 @@ Now that we can navigate and create files, we should be able to change permissio
 
 ```powershell
 # Create a file
-New-Item -Path .\file.txt -ItemType File
+New-Item -Path .\file.txt 
 
 # Check the owner and the groups
 Get-Acl .\file.txt
