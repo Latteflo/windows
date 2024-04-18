@@ -9,12 +9,9 @@ Then you could use environment variables, which are variables stored at the OS l
 - Create a variable by typing `$env:test = "hello powershell"`
 - Check the variable you just created the same way you did with the computer name
 - Now we will add something to this variable by typing `$env:test += " Becode"`
-- Check the variable
-- There is one really important environment variable : `$env:path`. This variable store the location where windows looks for files that are not in your current folder. For example, if you call VSCode from the powershell terminal, it opens it even if the executable isn't present in the current folder. That's because the path to the vscode's executable is stored in `$env:path`. Now download an executable software ([rufus](https://github.com/pbatard/rufus/releases/download/v3.13/rufus-3.13p.exe) for example) and copy it on your desktop. If you try from a command line to launch it, it will fail with a command not found (if you are not in the same folder).
-- Try to happen the $env:path to add the path to rufus' executable (It should be something like this if you copied it on your desktop : `C:\Users\Username\Desktop`)
-- Try to call rufus from anywhere
-- I would like you to have a look at [the recognized environment variables available on windows](https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables).
-- Write a small script reporting your computer specs and convert it in a csv file. You might have some trouble executing your script once saved. Why? How can you change it in a secure way?
+- Check the variable- There is one really important environment variable : `$env:path`. This variable store the location where windows looks for files that are not in your current folder. For example, if you call VSCode from the powershell terminal, it opens it even if the executable isn't present in the current folder. That's because the path to the vscode's executable is stored in `$env:path`. Now download ([rufus](https://github.com/pbatard/rufus/releases/download/v3.13/rufus-3.13p.exe)) If you try from a command line to launch it, it will fail with a command not found (if you are not in the same folder).
+- Try to happen the $env:path to add the path to rufus' executable (It should be something like this if you copied it on your desktop : `C:\Users\Username\Desktop`)  
+- Now try to launch Rufus from the command line. It should work now. We call it by typing `rufus-3.13p.exe`
 
 > **WARNING**: This exercise will **only work on windows** since it's specific to the way windows manages environment variables.
 
@@ -28,9 +25,13 @@ $os = Get-WmiObject Win32_OperatingSystem
 $cpu = Get-WmiObject Win32_Processor
 $ram = Get-WmiObject Win32_PhysicalMemory
 
-# Create a CSV file
+# Calculate the total RAM capacity in GB
+$totalRamCapacityInBytes = ($ram | Measure-Object -Property Capacity -Sum).Sum
+$totalRamCapacityInGB = $totalRamCapacityInBytes / 1GB
+
+# Create a CSV file content
 $csv = "Computer Name,Manufacturer,Model,OS,Architecture,Processor,RAM`n"
-$csv += "$($computer.Name),$($computer.Manufacturer),$($computer.Model),$($os.Caption),$($os.OSArchitecture),$($cpu.Name),$($ram.Capacity / 1GB) GB`n"
+$csv += "$($computer.Name),$($computer.Manufacturer),$($computer.Model),$($os.Caption),$($os.OSArchitecture),$($cpu.Name),$($totalRamCapacityInGB) GB`n"
 
 # Save the CSV file
 $csv | Out-File -FilePath "$env:USERPROFILE\computer_specs.csv"
@@ -45,7 +46,7 @@ To change the execution policy in a secure way, you can use the `Set-ExecutionPo
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-This will allow you to run the script without changing the global execution policy, which can be a security risk.
+And sure enough, the script will create a CSV file with the computer's specs in the user's profile folder.
 
 ### **Rufus** 
 - is a popular tool for creating bootable USB drives, and it's often used to install operating systems or run diagnostic tools.
