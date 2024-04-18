@@ -26,7 +26,7 @@ It's time to start installing softwares and keep them updated. We will see how t
 ```powershell
 # Get Windows updates
 # Install the PSWindowsUpdate module
-Install-Module -Name PSWindowsUpdate -Force
+Install-Module -Name PSWindowsUpdate
 
 # Check for updates
 Get-WindowsUpdate
@@ -52,7 +52,7 @@ choco uninstall vlc
 Get-WindowsFeature
 
 # Install Hyper-V
-Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 
 - `Install-Module` command is used to install a module from the PowerShell Gallery.
