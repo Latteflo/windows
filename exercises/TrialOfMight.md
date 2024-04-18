@@ -9,5 +9,4 @@ Now that you gathered some basic understanding of the Powershell CLI, here is an
 - Encrypt the collected passwords with GPG, upload them on Github with a minimalist readme and send me your public key. 
 
 
-
-
+[Completed exercice with the Encrypted passwords ](TrialComplete.md)
