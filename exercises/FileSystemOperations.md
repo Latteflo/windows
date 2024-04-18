@@ -2,7 +2,7 @@
 
 Now that we know how to move in the file system, let's check how to manipulate files and folders. In this challenge, you will discover and use the commands `Get-Content`, `echo`, `New-Item`, `Move-Item`, `Copy-Item`, and `Remove-Item`.
 
-- Create a file named story1.txt
+- Create a file named story1.txt  
 - Type `echo "Hello World" > story1.txt`
 - Print the content of the file
 - Create a folder named `story`
@@ -17,7 +17,7 @@ Now that we know how to move in the file system, let's check how to manipulate f
 
 ```powershell
 # Create a file named story1.txt
-New-Item -Path .\story1.txt -ItemType File
+New-Item -Path .\story1.txt 
 
 # Type `echo "Hello World" > story1.txt`
 echo "Hello World" > story1.txt
@@ -31,6 +31,10 @@ New-Item -Path .\story -ItemType Directory
 # Move `story1.txt` inside `story`
 Move-Item -Path .\story1.txt -Destination .\story
 
+We get into the story folder
+
+cd .\story
+
 # Copy `story1.txt` as `story2.txt`
 Copy-Item -Path .\story1.txt -Destination .\story2.txt
 
@@ -43,6 +47,12 @@ Rename-Item -Path .\story2.txt -NewName .\me.txt
 
 # Append `me.txt` and add "I am a junior at Becode"
 Add-Content -Path .\me.txt -Value "I am a junior at Becode"
+
+# Check the content of the file
+Get-Content .\me.txt
+
+# Get back to the parent folder
+cd ..
 
 # Remove the folder story with it's content
 Remove-Item -Path .\story -Recurse
