@@ -259,24 +259,6 @@ We will also add permissions to the home directories by running the following co
 ```powershell
 New-Item -Path "C:\Users\Alice" -ItemType Directory
 New-Item -Path "C:\Users\Bob" -ItemType Directory
-
-# access rule for Alice
-$AclAlice = Get-Acl "C:\Users\Alice"
-$ruleAlice = New-Object System.Security.AccessControl.FileSystemAccessRule("Alice", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
-$AclAlice.SetAccessRule($ruleAlice)
-Set-Acl "C:\Users\Alice" $AclAlice
-
-# access rule for Bob
-$AclBob = Get-Acl "C:\Users\Bob"
-$ruleBob = New-Object System.Security.AccessControl.FileSystemAccessRule("Bob", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
-$AclBob.SetAccessRule($ruleBob)
-Set-Acl "C:\Users\Bob" $AclBob
-```
-
-
-Let's verify the users accounts by running the following command:
-```powershell
-Get-ADUser -Filter *
 ```
 
 ### Configure Group Policies
@@ -284,13 +266,12 @@ Get-ADUser -Filter *
 Group Policy Objects (GPOs) are settings that control the working environment of user accounts and computer accounts. GPOs can manage the deployment of software, folder redirection, scripts, and security settings. 
 
 1. **Create and Link a GPO for Users:**
-   For setting up group policies, you would normally use the Group Policy Management Console (GPMC). If we're working solely with PowerShell, you can install the GPMC module and use PowerShell cmdlets for creating and managing GPOs.
+   For setting up group policies, we would normally use the Group Policy Management Console (GPMC). If we're working solely with PowerShell, you can install the GPMC module and use PowerShell cmdlets for creating and managing GPOs.
 
-2. **Example GPO - Password Policy:**
+2. **GPO - Password Policy:**
    ```powershell
-   New-GPO -Name "PasswordPolicy" | New-GPLink -Target "ou=Users,dc=becode,dc=org"
+   New-GPO -Name "PasswordPolicy" 
    ```
-
    You'd then configure the settings of the GPO using `Set-GPRegistryValue` or editing the GPO's XML file.
 
 For detailed instructions on managing GPOs with PowerShell, we can refer to Microsoft's documentation: [Group Policy Cmdlets in Windows PowerShell](https://docs.microsoft.com/en-us/powershell/module/grouppolicy/?view=windowsserver2022-ps).
@@ -301,12 +282,12 @@ For detailed instructions on managing GPOs with PowerShell, we can refer to Micr
    ```powershell
    Install-WindowsFeature -name Web-Server -IncludeManagementTools
    ```
-
+   ![alt text](image-17.png)
 2. **Configure IIS Settings:**
-   IIS settings can be configured via the `IISAdministration` PowerShell module. 
-   ```powershell
-   Import-Module IISAdministration
-   ```
+      IIS settings can be configured via the `IISAdministration` PowerShell module. 
+      ```powershell
+      Import-Module IISAdministration
+      ```
 
    Then we can use various cmdlets to configure IIS, like creating websites, app pools, etc.
 
@@ -314,6 +295,7 @@ For detailed instructions on managing GPOs with PowerShell, we can refer to Micr
 
 1. **Download and Install Sysmon:**
    You will need to download Sysmon manually and configure it with an XML file that determines what events to log. You can then review the logs with PowerShell:
+
    ```powershell
    Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational"
    ```
@@ -340,6 +322,7 @@ For detailed instructions on managing GPOs with PowerShell, we can refer to Micr
    ```powershell
    New-NetFirewallRule -DisplayName "Allow Incoming HTTP" -Direction Inbound –LocalPort 80 -Protocol TCP -Action Allow
    ```
+   ![alt text](image-18.png)
 
 ### Testing and Documentation
 
@@ -350,4 +333,5 @@ For detailed instructions on managing GPOs with PowerShell, we can refer to Micr
    ```
 
 2. **Test Access to IIS:**
-   From a client machine, access the IIS server using a web browser and navigate to `http://10.0.2.15`.
+   From a client machine, access the IIS server using a web browser and navigate to `http://10.0.2.15`
+
