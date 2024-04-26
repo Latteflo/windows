@@ -260,16 +260,17 @@ We will also add permissions to the home directories by running the following co
 New-Item -Path "C:\Users\Alice" -ItemType Directory
 New-Item -Path "C:\Users\Bob" -ItemType Directory
 
+# access rule for Alice
 $AclAlice = Get-Acl "C:\Users\Alice"
-$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Alice", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+$ruleAlice = New-Object System.Security.AccessControl.FileSystemAccessRule("Alice", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+$AclAlice.SetAccessRule($ruleAlice)
+Set-Acl "C:\Users\Alice" $AclAlice
 
-$AclAlice.SetAccessRule($rule)
-Set-Acl "C:\Users\Alice" $Acl
-
-$Acl = Get-Acl "C:\Users\Bob"
-$Ar = New-Object  system.security.accesscontrol.filesystemaccessrule("Bob","FullControl","Allow")
-$Acl.SetAccessRule($Ar)
-Set-Acl "C:\Users\Bob" $Acl
+# access rule for Bob
+$AclBob = Get-Acl "C:\Users\Bob"
+$ruleBob = New-Object System.Security.AccessControl.FileSystemAccessRule("Bob", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+$AclBob.SetAccessRule($ruleBob)
+Set-Acl "C:\Users\Bob" $AclBob
 ```
 
 
