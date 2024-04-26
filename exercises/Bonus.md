@@ -24,7 +24,7 @@ The Chairman would like a tool that he can use to query a Windows-based server t
 Naturally, the output should include the computer name. To show your scripting superiority, the output should also include the account that initiated the shutdown or reboot. The function should accept alternate credentials and be able to accept pipeline input for a list of server names.
 
 ## Solution
-    
+
 ```powershell
     function Get-ServerUptime {
         [CmdletBinding()]
@@ -33,7 +33,7 @@ Naturally, the output should include the computer name. To show your scripting s
             [string[]]$ComputerName = $env:COMPUTERNAME,
             [pscredential]$Credential
         )
-    
+
         begin {
             $os = Get-CimInstance -ClassName Win32_OperatingSystem
         }
@@ -52,6 +52,7 @@ Naturally, the output should include the computer name. To show your scripting s
                 $uptime = $os.LocalDateTime - $lastBootUpTime
                 $downtime = $lastBootUpTime - $lastShutdownTime
     
+
                 [PSCustomObject]@{
                     ComputerName = $computer
                     LastShutdownTime = $lastShutdownTime
@@ -66,4 +67,4 @@ Naturally, the output should include the computer name. To show your scripting s
             }
         }
     }
-    ```
+
